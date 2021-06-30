@@ -1327,34 +1327,6 @@ dpdk_src_x86_64 = SrcGroup(dir='src/dpdk/',
 
                  #tap
 
-                 #vdev_netvsc
-                 'drivers/net/vdev_netvsc/vdev_netvsc.c',
-
-                 #netvsc
-                 'drivers/net/netvsc/hn_ethdev.c',
-                 'drivers/net/netvsc/hn_rxtx.c',
-                 'drivers/net/netvsc/hn_rndis.c',
-                 'drivers/net/netvsc/hn_nvs.c',
-                 'drivers/net/netvsc/hn_vf.c',
-
-                 #ip_frag
-                 'lib/librte_ip_frag/rte_ipv4_fragmentation.c',
-                 'lib/librte_ip_frag/rte_ipv6_fragmentation.c',
-                 'lib/librte_ip_frag/rte_ipv4_reassembly.c',
-                 'lib/librte_ip_frag/rte_ipv6_reassembly.c',
-                 'lib/librte_ip_frag/rte_ip_frag_common.c',
-                 'lib/librte_ip_frag/ip_frag_internal.c',
-
-                 #bonding
-                 'drivers/net/bonding/rte_eth_bond_api.c',
-                 'drivers/net/bonding/rte_eth_bond_pmd.c',
-                 'drivers/net/bonding/rte_eth_bond_flow.c',
-                 'drivers/net/bonding/rte_eth_bond_args.c',
-                 'drivers/net/bonding/rte_eth_bond_8023ad.c',
-                 'drivers/net/bonding/rte_eth_bond_alb.c',
-
-                 ])
-
 dpdk_src_x86_64_ext = SrcGroup(dir='src',
         src_list=['drivers/trex_ixgbe_fdir.c',
                   'drivers/trex_i40e_fdir.c']
