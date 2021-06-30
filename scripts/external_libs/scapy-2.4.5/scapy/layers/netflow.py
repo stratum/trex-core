@@ -60,7 +60,8 @@ from scapy.fields import (
     XByteField,
     XShortField,
 )
-from scapy.packet import Packet, bind_layers, bind_bottom_up
+# TRex Change - Add Raw
+from scapy.packet import Packet, bind_layers, bind_bottom_up, Raw
 from scapy.plist import PacketList
 from scapy.sessions import IPSession, DefaultSession
 
