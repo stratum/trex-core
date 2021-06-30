@@ -33,7 +33,7 @@ from scapy.data import EPOCH
 from scapy.error import log_runtime, Scapy_Exception
 from scapy.compat import bytes_hex, chb, orb, plain_str, raw, bytes_encode
 from scapy.pton_ntop import inet_ntop, inet_pton
-from scapy.utils import inet_aton, inet_ntoa, lhex, mac2str, str2mac, EDecimal
+from scapy.utils import inet_aton, inet_ntoa, lhex, mac2str, str2mac, EDecimal, str2bytes, str2int
 from scapy.utils6 import in6_6to4ExtractAddr, in6_isaddr6to4, \
     in6_isaddrTeredo, in6_ptop, Net6, teredoAddrExtractInfo
 from scapy.base_classes import Gen, Net, BasePacket, Field_metaclass
@@ -151,7 +151,8 @@ class Field(Generic[I, M]):
         "default",
         "sz",
         "owners",
-        "struct"
+        "struct",
+        "_offset", # TRex Change
     ]
     islist = 0
     ismutable = False
@@ -170,6 +171,19 @@ class Field(Generic[I, M]):
         self.default = self.any2i(None, default)
         self.sz = struct.calcsize(self.fmt)  # type: int
         self.owners = []  # type: List[Type[Packet]]
+        self._offset = 0         # TRex Change
+
+
+    # TRex Change
+    def get_size_bytes(self):
+        if  hasattr(self, 'size'):
+            return 0 # bitfield
+        else:
+            return self.sz
+
+    # TRex Change
+    def get_size_bits(self):
+        return getattr(self, 'size', self.sz * 8)
 
     def register_owner(self, cls):
         # type: (Type[Packet]) -> None
@@ -311,7 +325,7 @@ AnyField = Union[Field[Any, Any], _FieldContainer]
 
 class Emph(_FieldContainer):
     """Empathize sub-layer for display"""
-    __slots__ = ["fld"]
+    __slots__ = ["fld", "_offset"]
 
     def __init__(self, fld):
         # type: (Any) -> None
@@ -346,7 +360,7 @@ class ActionField(_FieldContainer):
 
 
 class ConditionalField(_FieldContainer):
-    __slots__ = ["fld", "cond"]
+    __slots__ = ["fld", "cond", "_offset"]
 
     def __init__(self,
                  fld,  # type: Field[Any, Any]
@@ -428,7 +442,7 @@ use.
 
     """
 
-    __slots__ = ["flds", "dflt", "name", "default"]
+    __slots__ = ["flds", "dflt", "name", "default", "_offset"]
 
     def __init__(self,
                  flds,  # type: List[Tuple[Field[Any, Any], Any]]
@@ -726,6 +740,9 @@ class MACField(Field[Optional[str], bytes]):
 
     def any2i(self, pkt, x):
         # type: (Optional[Packet], Any) -> str
+        # TRex Change
+        if isinstance(x, str) and len(x) == 6:
+            x = str2bytes(x)
         if isinstance(x, bytes) and len(x) == 6:
             return self.m2i(pkt, x)
         return cast(str, x)
@@ -829,8 +846,9 @@ class SourceIPField(IPField):
 
     def i2m(self, pkt, x):
         # type: (Optional[Packet], Optional[Union[str, Net]]) -> bytes
-        if x is None and pkt is not None:
-            x = self.__findaddr(pkt)
+        if x is None:
+            # TRex Change
+            x = "16.0.0.1"
         return super(SourceIPField, self).i2m(pkt, x)
 
     def i2h(self, pkt, x):
@@ -981,6 +999,10 @@ class ThreeBytesField(Field[int, int]):
     def getfield(self, pkt, s):
         # type: (Packet, bytes) -> Tuple[bytes, int]
         return s[3:], self.m2i(pkt, struct.unpack(self.fmt, b"\x00" + s[:3])[0])  # noqa: E501
+
+    # TRex Change
+    def i2repr(self, pkt, x):
+        return ByteField.i2repr(self, pkt, x)
 
 
 class X3BytesField(ThreeBytesField, XByteField):
@@ -1193,7 +1215,7 @@ class ShortField(Field[int, int]):
         # type: (str, Optional[int]) -> None
         Field.__init__(self, name, default, "H")
 
-
+# TRex Change
 class SignedShortField(Field[int, int]):
     def __init__(self, name, default):
         # type: (str, Optional[int]) -> None
@@ -1796,6 +1818,31 @@ class StrLenField(StrField):
     def randval(self):
         # type: () -> RandBin
         return RandBin(RandNum(0, self.max_length or 1200))
+
+
+# TRex Change - Added the class
+class UTF8LenField(StrLenField):
+    """
+    StrField which value is decoded as UTF-8.
+    """
+    def i2h(self, pkt, x):
+        try:
+            return x.decode('utf-8')
+        except:
+            return x
+
+
+# TRex Change - Added the class
+class VarLenIntField(StrLenField):
+    """
+    StrField which value is attempted to be converted to an int.
+    """
+    def i2h(self, pkt, x):
+        if type(x) is str:
+            return str2int(x)
+        return x
+
+    i2repr = i2h
 
 
 class XStrField(StrField):

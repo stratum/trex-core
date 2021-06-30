@@ -96,7 +96,7 @@ def _version():
         except Exception:
             # Rely on git archive "export-subst" git attribute.
             # See 'man gitattributes' for more details.
-            git_archive_id = '8b63d73a17  (tag: v2.4.5, refs/pull/3178/head)'
+            git_archive_id = '8b63d73a17 (tag: v2.4.5)'
             sha1 = git_archive_id.strip().split()[0]
             match = re.search('tag:(\\S+)', git_archive_id)
             if match:

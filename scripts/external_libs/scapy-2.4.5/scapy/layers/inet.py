@@ -512,9 +512,12 @@ class IP(Packet, IPTools):
                    ByteField("ttl", 64),
                    ByteEnumField("proto", 0, IP_PROTOS),
                    XShortField("chksum", None),
+                   # TRex Change - Put fixed Src and Dst to prevent from looking up the Src and Dst.
                    # IPField("src", "127.0.0.1"),
-                   Emph(SourceIPField("src", "dst")),
-                   Emph(DestIPField("dst", "127.0.0.1")),
+                   # Emph(SourceIPField("src", "dst")),
+                   # Emph(DestIPField("dst", "127.0.0.1")),
+                   Emph(IPField("src", "16.0.0.1")),
+                   Emph(IPField("dst", "48.0.0.1")),
                    PacketListField("options", [], IPOption, length_from=lambda p:p.ihl * 4 - 20)]  # noqa: E501
 
     def post_build(self, p, pay):

@@ -74,7 +74,8 @@ class IGMP(Packet):
         p += pay
         if self.chksum is None:
             ck = checksum(p)
-            p = p[:2] + chb(ck >> 8) + chb(ck & 0xff) + p[4:]
+            # TRex Change
+            p = p[:2] + bytes([ck>>8]) + bytes([ck&0xff]) + p[4:]
         return p
 
     @classmethod

@@ -215,7 +215,10 @@ class Route:
         return bcast_list
 
 
-conf.route = Route()
+# TRex Change - Set Route to None
+# conf.route = Route()
+conf.route = None
 
-# Load everything, update conf.iface
-conf.ifaces.reload()
+# TRex Changes
+# iface = conf.route.route(None, verbose=0)[0]
+iface = None
