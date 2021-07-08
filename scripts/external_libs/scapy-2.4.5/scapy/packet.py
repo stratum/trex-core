@@ -1060,7 +1060,7 @@ class Packet(six.with_metaclass(Packet_metaclass,  # type: ignore
             if not s:
                 break
             # TRex change
-            f.offset = 0
+            f._offset = offset
             s, fval = f.getfield(self, s)
             # TRex change
             offset = len(_raw) - (len(s[0]) if type(s) is tuple else len(s))
