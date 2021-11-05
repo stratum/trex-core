@@ -1325,7 +1325,33 @@ dpdk_src_x86_64 = SrcGroup(dir='src/dpdk/',
                  'drivers/net/failsafe/failsafe_flow.c',
                  'drivers/net/failsafe/failsafe_intr.c',
 
-                 #tap
+                 #vdev_netvsc
+                 'drivers/net/vdev_netvsc/vdev_netvsc.c',
+
+                 #netvsc
+                 'drivers/net/netvsc/hn_ethdev.c',
+                 'drivers/net/netvsc/hn_rxtx.c',
+                 'drivers/net/netvsc/hn_rndis.c',
+                 'drivers/net/netvsc/hn_nvs.c',
+                 'drivers/net/netvsc/hn_vf.c',
+
+                 #ip_frag
+                 'lib/librte_ip_frag/rte_ipv4_fragmentation.c',
+                 'lib/librte_ip_frag/rte_ipv6_fragmentation.c',
+                 'lib/librte_ip_frag/rte_ipv4_reassembly.c',
+                 'lib/librte_ip_frag/rte_ipv6_reassembly.c',
+                 'lib/librte_ip_frag/rte_ip_frag_common.c',
+                 'lib/librte_ip_frag/ip_frag_internal.c',
+
+                 #bonding
+                 'drivers/net/bonding/rte_eth_bond_api.c',
+                 'drivers/net/bonding/rte_eth_bond_pmd.c',
+                 'drivers/net/bonding/rte_eth_bond_flow.c',
+                 'drivers/net/bonding/rte_eth_bond_args.c',
+                 'drivers/net/bonding/rte_eth_bond_8023ad.c',
+                 'drivers/net/bonding/rte_eth_bond_alb.c',
+
+                 ])
 
 dpdk_src_x86_64_ext = SrcGroup(dir='src',
         src_list=['drivers/trex_ixgbe_fdir.c',
@@ -1977,11 +2003,12 @@ dpdk_includes_path =''' ../src/
                         ../src/dpdk/drivers/net/bnxt/tf_ulp/
                         ../src/dpdk/drivers/net/memif/
                         ../src/dpdk//drivers/common/iavf/                        
-
                         ../src/dpdk/drivers/net/ena/
                         ../src/dpdk/drivers/net/ena/base/
                         ../src/dpdk/drivers/net/ena/base/ena_defs/
-
+                         
+                        ../src/dpdk/lib/librte_telemetry/
+                        ../src/dpdk/lib/librte_rcu/
                         ../src/dpdk/lib/
                         ../src/dpdk/lib/librte_cfgfile/
                         ../src/dpdk/lib/librte_compat/
@@ -1990,7 +2017,6 @@ dpdk_includes_path =''' ../src/
                         ../src/dpdk/lib/librte_eal/common/
                         ../src/dpdk/lib/librte_eal/common/include/
                         ../src/dpdk/lib/librte_eal/common/include/arch/
-
                         ../src/dpdk/lib/librte_eal/common/include/generic/
                         ../src/dpdk/lib/librte_eal/linux/
                         ../src/dpdk/lib/librte_eal/linux/eal/
@@ -2011,14 +2037,14 @@ dpdk_includes_path =''' ../src/
                         ../src/dpdk/lib/librte_timer/
                         ../src/dpdk/lib/librte_ip_frag/
                         ../src/dpdk/
-
+                        
+                        ../src/dpdk/lib/librte_security/
                         ../src/dpdk/drivers/bus/pci/
                         ../src/dpdk/drivers/bus/vdev/
                         ../src/dpdk/drivers/bus/vmbus/
                         ../src/dpdk/drivers/bus/pci/linux/
                         ../src/dpdk/drivers/bus/vmbus/linux/
                         ../external_libs/dpdk_linux_tap_cross/
-
                     '''
 
 # Include arch specific folder before generic folders
