@@ -30,7 +30,7 @@ def __load ():
     # arch-dep requires intel/arm, 32bit/64bit directories
     ext_libs = [ {'name': 'texttable',    'dir': 'texttable-0.8.4'},
                  {'name': 'yaml',         'dir': 'pyyaml-3.11', 'py-dep': True},
-                 {'name': 'scapy',        'dir': 'scapy-2.4.3'},
+                 {'name': 'scapy',        'dir': 'scapy-2.4.5'},
                  {'name': 'zmq',          'dir': 'pyzmq-ctypes'},
                  {'name': 'simpy',        'dir': 'simpy-3.0.10'},
                  {'name': 'trex_openssl', 'dir': 'trex-openssl'},
@@ -66,7 +66,7 @@ def __import_ext_libs(ext_libs, ext_libs_path):
 
         if not os.path.exists(full_path):
             err_msg  =  "\n\nUnable to find required external library: '{0}'\n".format(p['name'])
-            err_msg +=  "Please provide the correct path using TREX_EXT_LIBS variable\n\n" 
+            err_msg +=  "Please provide the correct path using TREX_EXT_LIBS variable\n\n"
             err_msg +=  "Current path used: '{0}'".format(full_path)
 
             raise Exception(err_msg)
