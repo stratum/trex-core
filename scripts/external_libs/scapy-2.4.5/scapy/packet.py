@@ -744,7 +744,7 @@ class Packet(six.with_metaclass(Packet_metaclass,  # type: ignore
                 break
 
     # TRex change
-    def do_build(self, result):
+    def do_build(self, result=None):
         """
         Create the default version of the layer
 
