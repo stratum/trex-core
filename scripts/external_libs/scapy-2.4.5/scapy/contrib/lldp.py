@@ -272,9 +272,9 @@ class LLDPDU(Packet):
         self._check()
         return super(LLDPDU, self).post_dissect(s)
 
-    def do_build(self):
+    def do_build(self, result):
         self._check()
-        return super(LLDPDU, self).do_build()
+        return super(LLDPDU, self).do_build(result)
 
 
 def _ldp_id_adjustlen(pkt, x):
